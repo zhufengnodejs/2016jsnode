@@ -15,7 +15,20 @@ http.createServer(function(request,response){
                response.end(data);
            })
        }else if(method == 'POST'){//如果请求的方法POST
-
+        //客户端在表单中已经输入了内容，并且以POST的方式提交到了服务器端，并把表单的数据进行序列化放在请求体里。然后在服务器端可以通过流的方式读取
+           var result = '';
+           request.setEncoding('utf8');//设置请求流中的编码
+           //因为服务器可能会多次提交客户端的数据，会触发多次data事件
+           request.on('data',function(data){
+               //如果设置了编码，那data就是字符串，如果不设置编码，data是Buffer
+               result+= data;
+           });
+           //最后当所有的数据都接收完毕之后会触发end事件
+           request.on('end',function(){
+               //如果以post方式提交表单，会把表单keyvalue转成查询字符串放在请求体里
+              console.log(result);
+               response.end(result);
+           });
        }
    }else{
        response.end('Not Found');
