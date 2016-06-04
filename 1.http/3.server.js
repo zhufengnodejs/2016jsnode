@@ -4,6 +4,7 @@
  * 2 服务器 能在特定IP特定端口上监听客户端的连接
  **/
 var fs = require('fs');
+var mime = require('mime');
 var http = require('http');//核心模块，直接加载即可
 //创建一个HTTP服务器，并在客户端连接到来的时候执行回应的回调函数
 // request 代表客户端的请求，可以从中读取请求中的数据
@@ -14,30 +15,28 @@ var http = require('http');//核心模块，直接加载即可
  * 2. 如果要修改重构的话修改的地方很多
  * 3. 时间多，容易出错
  */
+/**
+ * 全局安装 一次安装，到处在CMD使用，
+ * 本地安装 一次安装，只能在当前目录下面用，在代码中通过 require加载使用
+ */
 http.createServer(function(request,response){
-  //解析客户端的请求路径，根据不同的路径返回不同的响应
-  var url = request.url;
-   //当访问服务器的路径是/index.html的时候
-  if(url =='/index.html'){
-     //读取文件的内容并且写到响应里去
-     fs.readFile('./index.html',function(err,data){
-         response.end(data);
-     })
-     //如果客户端请求的路径是style.css的话
-  }else if(url == '/style.css'){
-     //增加响应头，告诉浏览器响应的类型是什么
-     response.setHeader('Content-Type','text/css');
-     fs.readFile('./style.css',function(err,data){
-        response.end(data);
-     })
-  }else if(url == '/index.js'){
-     response.setHeader('Content-Type','application/x-javascript');
-     fs.readFile('./index.js',function(err,data){
-        response.end(data);
-     })
-  }else{
-     response.end('404');
-  }
+
+    //先判断文件是否存在，如果存在读出来返回给客户端
+  fs.exists('.'+request.url,function(exists){
+      if(exists){
+          //增加响应头，告诉浏览器响应的类型是什么
+          response.setHeader('Content-Type',mime.lookup(request.url));
+          //读取文件并且返回写给响应
+          fs.readFile('.'+request.url,function(err,data){
+              response.end(data);
+          })
+      }else{
+          response.setHeader('Content-Type','text/html;charset=utf-8');
+        response.statusCode = 404;//设置响应码为404 Not Found
+        response.end('你要的资源不存在');//设置响应体
+      }
+  })
+
 
 //listen EADDRINUSE 端口号被占用
 }).listen(9090);//在本机的9090端口上进行监听
