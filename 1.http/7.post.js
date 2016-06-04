@@ -5,6 +5,7 @@
  **/
 var http = require('http');
 var fs = require('fs');
+var url = require('url');
 var querystring = require('querystring');
 /**
  *  curl -X "POST" -d "name=zfpx" -H "my:yours" http://localhost:9090/reg
@@ -17,9 +18,11 @@ http.createServer(function(request,response){
     request.url = decodeURIComponent(request.url);
     console.log(request.url,request.method);
     console.log(request.headers);
-   if(request.url == '/reg'){//当请求的url = /reg
+   var urlObj = url.parse(request.url);
+   if(urlObj.pathname == '/reg'){//当请求的url = /reg
        var method = request.method;//获取方法名
        if(method == 'GET'){//如果方法是GET
+           response.setHeader('Content-Type','text/html;charset=UTF-8');
            //读取form.html文件的内容
            fs.readFile('./form.html',function(err,data){
                //把数据写入响应体
