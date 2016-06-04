@@ -13,6 +13,7 @@ var fs = require('fs');
  *  -H 指定请求头
  */
 http.createServer(function(request,response){
+    request.url = decodeURIComponent(request.url);
     console.log(request.url,request.method);
     console.log(request.headers);
    if(request.url == '/reg'){//当请求的url = /reg
@@ -30,11 +31,13 @@ http.createServer(function(request,response){
            //因为服务器可能会多次提交客户端的数据，会触发多次data事件
            request.on('data',function(data){
                //如果设置了编码，那data就是字符串，如果不设置编码，data是Buffer
-               result+= data;
+               //如果请求体有中文的话,需要解码 把汉字的编码转成utf8汉字
+               result+= decodeURIComponent(data);
            });
            //最后当所有的数据都接收完毕之后会触发end事件
            request.on('end',function(){
                //如果以post方式提交表单，会把表单keyvalue转成查询字符串放在请求体里
+            response.setHeader('Content-Type','text/html;charset=utf-8');
               console.log(result);
                response.end(result);
            });
