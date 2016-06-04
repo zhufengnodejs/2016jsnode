@@ -23,9 +23,11 @@ var http = require('http');//核心模块，直接加载即可
  */
 http.createServer(function(request,response){
     console.log(request.url);
+    //先对url进行解码，把转义后的中文字符转回中文
     request.url = decodeURIComponent(request.url);
+    //如果url等于/content的话
     if(request.url == '/content'){
-        response.end('hello');
+        response.end('hello');//在响应体中返回hello
     }else{
         //先判断文件是否存在，如果存在读出来返回给客户端
         fs.exists('.'+request.url,function(exists){
