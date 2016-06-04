@@ -24,21 +24,26 @@ var http = require('http');//核心模块，直接加载即可
 http.createServer(function(request,response){
     console.log(request.url);
     request.url = decodeURIComponent(request.url);
-    //先判断文件是否存在，如果存在读出来返回给客户端
-  fs.exists('.'+request.url,function(exists){
-      if(exists){
-          //增加响应头，告诉浏览器响应的类型是什么
-          response.setHeader('Content-Type',mime.lookup(request.url));
-          //读取文件并且返回写给响应
-          fs.readFile('.'+request.url,function(err,data){
-              response.end(data);
-          })
-      }else{
-          response.setHeader('Content-Type','text/html;charset=utf-8');
-        response.statusCode = 404;//设置响应码为404 Not Found
-        response.end('你要的资源不存在');//设置响应体
-      }
-  })
+    if(request.url == '/content'){
+        response.end('hello');
+    }else{
+        //先判断文件是否存在，如果存在读出来返回给客户端
+        fs.exists('.'+request.url,function(exists){
+            if(exists){
+                //增加响应头，告诉浏览器响应的类型是什么
+                response.setHeader('Content-Type',mime.lookup(request.url));
+                //读取文件并且返回写给响应
+                fs.readFile('.'+request.url,function(err,data){
+                    response.end(data);
+                })
+            }else{
+                response.setHeader('Content-Type','text/html;charset=utf-8');
+                response.statusCode = 404;//设置响应码为404 Not Found
+                response.end('你要的资源不存在');//设置响应体
+            }
+        })
+    }
+
 
 
 //listen EADDRINUSE 端口号被占用
