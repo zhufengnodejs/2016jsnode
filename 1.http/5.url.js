@@ -1,6 +1,6 @@
 var url = require('url');
 var str = 'http://zhufengnodejs:123@github.com:80/2016jsnode?name=zfpx&age=8#top';
-var urlObj = url.parse(str); //用于将字符串转成对象
+var urlObj = url.parse(str,true); //用于将字符串转成对象
 console.log(urlObj);
 console.log(url.format(urlObj));//用于将对象转成字符串
 /**
