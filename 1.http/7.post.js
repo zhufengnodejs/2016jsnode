@@ -6,13 +6,15 @@
 var http = require('http');
 var fs = require('fs');
 /**
- *  curl -X "POST" -d "name=zfpx&age=8" http://localhost:9090/reg
+ *  curl -X "POST" -d "name=zfpx" -H "my:yours" http://localhost:9090/reg
+
  *  -X 指定请求的方法名
  *  -d 指定 请求体数据
  *  -H 指定请求头
  */
 http.createServer(function(request,response){
     console.log(request.url,request.method);
+    console.log(request.headers);
    if(request.url == '/reg'){//当请求的url = /reg
        var method = request.method;//获取方法名
        if(method == 'GET'){//如果方法是GET
