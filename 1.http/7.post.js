@@ -5,6 +5,7 @@
  **/
 var http = require('http');
 var fs = require('fs');
+var querystring = require('querystring');
 /**
  *  curl -X "POST" -d "name=zfpx" -H "my:yours" http://localhost:9090/reg
 
@@ -37,9 +38,9 @@ http.createServer(function(request,response){
            //最后当所有的数据都接收完毕之后会触发end事件
            request.on('end',function(){
                //如果以post方式提交表单，会把表单keyvalue转成查询字符串放在请求体里
-            response.setHeader('Content-Type','text/html;charset=utf-8');
+            response.setHeader('Content-Type','application/json;charset=utf-8');
               console.log(result);
-               response.end(result);
+               response.end(JSON.stringify(querystring.parse(result)));
            });
        }
    }else{
