@@ -4,6 +4,8 @@
  * 2 服务器 能在特定IP特定端口上监听客户端的连接
  **/
 var fs = require('fs');
+// https://www.npmjs.com/package/mime
+//https://github.com/zhufengnodejs/2016jsnode
 var mime = require('mime');
 var http = require('http');//核心模块，直接加载即可
 //创建一个HTTP服务器，并在客户端连接到来的时候执行回应的回调函数
@@ -20,7 +22,8 @@ var http = require('http');//核心模块，直接加载即可
  * 本地安装 一次安装，只能在当前目录下面用，在代码中通过 require加载使用
  */
 http.createServer(function(request,response){
-
+    console.log(request.url);
+    request.url = decodeURIComponent(request.url);
     //先判断文件是否存在，如果存在读出来返回给客户端
   fs.exists('.'+request.url,function(exists){
       if(exists){
