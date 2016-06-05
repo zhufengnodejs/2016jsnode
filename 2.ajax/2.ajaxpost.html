@@ -20,10 +20,9 @@
         //循环表单中的每个元素
         for(var i=0;i<elements.length;i++){
             if(elements[i].type == 'text')//如果input元素的类型是text的话
-                formData.push(elements[i].name+'='+elements[i].value);
+                formData.push(elements[i].name+'='+elements[i].value);//把字符串添加到数组中
         }
-        console.log(formData.join('&'));
-        return formData.join('&');
+        return formData.join('&');//把数组中的每个元素用&连接
     }
 
     //把表单转成JSON字符串
@@ -34,13 +33,24 @@
         //循环表单中的每个元素
         for(var i=0;i<elements.length;i++){
             if(elements[i].type == 'text')
-                formData[elements[i].name] = elements[i].value;
+                formData[elements[i].name] = elements[i].value;//把input元素的name作为对象的key,input元素的value作为对象的值
         }
-        return JSON.stringify(formData);
+        return JSON.stringify(formData);//转成JSON字符串
     }
     //编写一个注册方法，当点击按钮的时候执行此方法
    function reg(){
-       toUrlEncoded(document.getElementsByName('regForm')[0]);
+       var body = toUrlEncoded(document.getElementsByName('regForm')[0]);//username=user&password=pwd
+       var xhr = new XMLHttpRequest();
+
+       xhr.open('POST','/ajax',true);
+       //设置请求头中的内容类型，告诉服务器我的请求体类型是啥
+       xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+       xhr.onreadystatechange = function(){
+            if(xhr.readyState == xhr.DONE && /^2\d{2}$/.test(xhr.status)){
+                console.log(xhr.responseText);//responseText响应体转成的字符串
+            }
+       }
+       xhr.send(body);//把body字符串作为请求体发送到服务器端
    }
 </script>
 </html>
