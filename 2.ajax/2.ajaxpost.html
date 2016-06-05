@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form name="regForm">
+    用户名 <input type="text" name="username"><br/>
+    密码 <input type="text" name="password"><br/>
+    <button type="button" onclick="reg()">注册</button>
+</form>
+</body>
+<script>
+    //序列化表单 urlencoded 查询字符串 key=value&key2=value2
+    function toUrlEncoded(form){
+        var formData =[];//先创建一个数组
+        //1.得到表单中的所有的元素 类似为一个类数组
+        var elements = form.elements;
+        //循环表单中的每个元素
+        for(var i=0;i<elements.length;i++){
+            if(elements[i].type == 'text')//如果input元素的类型是text的话
+                formData.push(elements[i].name+'='+elements[i].value);
+        }
+        console.log(formData.join('&'));
+        return formData.join('&');
+    }
+
+    //把表单转成JSON字符串
+    function toJson(form){
+        var formData = {};//先创建一个空对象
+        //1.得到表单中的所有的元素 类似为一个类数组
+        var elements = form.elements;
+        //循环表单中的每个元素
+        for(var i=0;i<elements.length;i++){
+            if(elements[i].type == 'text')
+                formData[elements[i].name] = elements[i].value;
+        }
+        return JSON.stringify(formData);
+    }
+    //编写一个注册方法，当点击按钮的时候执行此方法
+   function reg(){
+       toUrlEncoded(document.getElementsByName('regForm')[0]);
+   }
+</script>
+</html>

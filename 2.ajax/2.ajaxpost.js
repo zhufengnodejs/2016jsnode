@@ -9,7 +9,7 @@ http.createServer(function(request,response){
    var pathname = urlObj.pathname;
    if(pathname == '/'){
        //从文件创建一个可读流
-        fs.createReadStream('./1.ajaxget.html').pipe(response);// response是一个可写流
+        fs.createReadStream('./2.ajaxpost.html').pipe(response);// response是一个可写流
    }else if(pathname == '/ajax'){
        response.statusCode = 404;
        response.end('ajax');

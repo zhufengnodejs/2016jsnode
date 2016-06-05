@@ -7,4 +7,34 @@
 <body>
 
 </body>
+<script>
+    var AJAX = {
+        0:'未初始化',
+        1:'已初始化',
+        2:'请求已经发出，但未接收到响应',
+        3:'接收到响应，但还没接收完',
+        4:'响应已经接收完毕了'
+    }
+    //创建ajax对象
+    var xhr = new XMLHttpRequest(); // 0 未初始化
+    //注册当状态变化时的回调函数
+    xhr.onreadystatechange = function(){
+        //alert(AJAX[xhr.readyState]);
+        //当状态为4的时候，客户端完全接收完毕数据，可以执行输出
+        if(xhr.readyState == 4 ){
+            if(/^2\d{2}$/.test(xhr.status+'')){
+                console.log(xhr.responseText);
+            }else{
+                console.error('ajax请求失败了');
+            }
+            //console.log(xhr.status);//响应状态码
+            //console.log(xhr.statusText);//响应状态码原因短语
+
+        }
+
+    }
+    //打开连接 使用GET请求方法 向/ajax路径 以异步的方式发起请求
+    xhr.open('GET','/ajax',true);//1 (初始化)
+    xhr.send();//2 (发送数据)
+</script>
 </html>
