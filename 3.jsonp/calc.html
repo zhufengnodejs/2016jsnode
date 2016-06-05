@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>百度联想</title>
+</head>
+<body>
+<input type="text" id="a">+<input type="text" id="b">
+<input type="button" onclick="calc()" value="计算">
+<div id="result"></div>
+</body>
+<script>
+    function show(result){
+        //alert(result);
+        document.querySelector('#result').innerHTML= result;
+    }
+    //当按键起来的执行此函数
+    function calc(){
+        //取得关键字的值
+        var a = document.querySelector('#a').value;
+        var b = document.querySelector('#b').value;
+        //创建script标签
+        var script = document.createElement('script');
+        //指定标签的源属性
+        script.src = 'http://localhost:9090/calc?a='+a+'&b='+b+'&cb=show';
+        //把此标签插入到当前页面中，浏览器会自动向SRC指定的URL发起请求，并执行下载下来的代码
+        document.body.appendChild(script);
+    }
+</script>
+
+</html>
