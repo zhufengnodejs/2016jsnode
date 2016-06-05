@@ -14,24 +14,25 @@ http.createServer(function(request,response){
        //从文件创建一个可读流
         fs.createReadStream('./3.ajaximage.html').pipe(response);// response是一个可写流
    }else if(pathname == '/ajax'){
-        var form = new formidable.IncomingForm();
+        var parser = new formidable.IncomingForm();
        //异步解析完成后会调用回调函数，fileds里放置普通的input,files放置文件域
-       form.parse(request,function(err,fields,files){
-            console.log(fields);
+       parser.parse(request,function(err,fields,files){
            /**
-            * path 文件存储在硬盘的上的物理路径
-            * name 文件原来的名称 1.png
-            * type 文件原来的类型
+            * files是个对象key就是属性 avatar value=对象
+            *   path 文件存储在硬盘的上的物理路径 C:\Users\Administrator\AppData\Local\Temp\upload_7f0f6fc0932e85981a8096582f27a364
+            *   name 文件原来的名称 1.png
+            *   type 文件原来的类型 image/png
             */
            //把文件从临时目录中读出来，写到当前目录下面  名字还用原始的名称
            fs.createReadStream(files.avatar.path).pipe(
                fs.createWriteStream('./'+files.avatar.name)
            );
+           //增加一个头像自定义属性
            fields.avatar = '/'+files.avatar.name; // /2.png
            response.end(JSON.stringify(fields));
        });
    }else{
-       // 1.png
+       // ./1.png 判断有无此文件 有的话读出来返回，没有返回404
        fs.exists('.'+pathname,function(exists){
            if(exists){
                 fs.createReadStream('.'+pathname).pipe(response);
