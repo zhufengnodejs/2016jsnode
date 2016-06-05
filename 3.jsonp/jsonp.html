@@ -12,11 +12,17 @@
 </body>
 <script>
     function show(result){
+        //得到关键字数组
         var data = result.s;
-        var str = '';
+        /*var str = '';
+        //对数组中的每个元素拼上一个li
         data.forEach(function(item){
             str += '<li>'+item+'</li>';
-        });
+        });*/
+        var str = data.map(function(item){
+            return '<li>'+item+'</li>';
+        }).join('');
+        //最后把拼好的字符串设置到ul中
         document.querySelector('#content').innerHTML = str;
     }
     //当按键起来的执行此函数
