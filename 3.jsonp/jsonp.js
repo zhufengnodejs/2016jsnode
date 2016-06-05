@@ -7,7 +7,7 @@ http.createServer(function(req,res){
    var query = urlObj.query;//得到查询字符串对象
    if(pathname == '/calc'){
        var result = parseInt(query.a) + parseInt(query.b);//得到a b并且执行相加
-       var cb = query.cb;
+       var cb = query.cb;//自动执行函数名
        res.end(cb+'('+result+')');
    }else{
        res.end('404');

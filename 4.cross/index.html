@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET','http://localhost:9090/ajax',true);
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState == 4){
+            console.log(xhr.responseText);
+        }
+    }
+    xhr.send();
+</script>
+</html>
