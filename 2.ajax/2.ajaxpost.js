@@ -24,10 +24,13 @@ http.createServer(function(request,response){
          //注意 headers是个对象，它里面放的是所有的请求头，全部小写
          var contentType =  request.headers['content-type'];
          var body = {};//body是请求体对象
-         if(contentType == 'application/x-www-form-urlencoded'){
+         if(contentType == 'application/x-www-form-urlencoded'){//如果请求头中的内容类型是urlencoded的话，把此字符串转成对象
             body = querystring.parse(result);
+         }else if(contentType == 'application/json'){
+            body = JSON.parse(result);
          }
-          response.end(JSON.stringify(body));//把对象转成JSON字符串返回
+         response.setHeader('Content-Type','application/json');
+         response.end(JSON.stringify(body));//把对象转成JSON字符串返回
        });
    }else{
        response.end('404');

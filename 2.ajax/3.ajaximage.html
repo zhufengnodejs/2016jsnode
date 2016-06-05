@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form name="regForm">
+    用户名 <input type="text" name="username"><br/>
+    密码 <input type="text" name="password"><br/>
+    头像 <input type="file" name="avatar"><br/>
+    <button type="button" onclick="reg()">注册</button>
+</form>
+<div id="preview">
+    用户名 <span id="username"></span><br/>
+    密码 <span id ="password"></span><br/>
+    头像 <img src="" id="avatar" alt="">
+</div>
+</body>
+<script>
+   function reg(){
+       //创建个空白表单对象 html5新增加的一个构造函数
+       var formData = new FormData();
+       //向对象中追加属性和值
+       formData.append('username',document.getElementsByName('username')[0].value);
+       formData.append('password',document.getElementsByName('password')[0].value);
+       //每个文件域都有一个files数组属性，代表用户选择中所有文件。
+       formData.append('avatar',document.getElementsByName('avatar')[0].files[0]);
+       var xhr = new XMLHttpRequest();
+       //设置响应体的类型，设置以后浏览器会自动将response转换为对应类型
+       xhr.responseType = 'json';
+       xhr.open('POST','/ajax',true);
+       xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4 ){
+                var result = xhr.response;//这是响应体，类型不固定。
+                console.log(result);
+                document.querySelector('#username').innerHTML = result.username;
+                document.querySelector('#password').innerHTML = result.password;
+                document.querySelector('#avatar').src = result.avatar;
+            }
+       }
+       //formData可以作为请求体发送到服务器端
+       xhr.send(formData);
+
+   }
+</script>
+</html>
