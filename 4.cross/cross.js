@@ -15,6 +15,8 @@ http.createServer(function(req,res){
            result += data;
        });
        req.on('end',function(data){
+           res.setHeader('Access-Control-Allow-Credentials','true');
+           res.setHeader('Set-Cookie','name=zfpx');
            res.end(result);
        });
 
