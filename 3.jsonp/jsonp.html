@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>百度联想</title>
+</head>
+<body>
+请输入关键字:<input type="text" id="keyword" onkeyup="suggest()">
+<ul id="content">
+
+</ul>
+</body>
+<script>
+    function show(result){
+        var data = result.s;
+        var str = '';
+        data.forEach(function(item){
+            str += '<li>'+item+'</li>';
+        });
+        document.querySelector('#content').innerHTML = str;
+    }
+    //当按键起来的执行此函数
+    function suggest(){
+        //取得关键字的值
+        var keyword = document.querySelector('#keyword').value;
+        //创建script标签
+        var script = document.createElement('script');
+        //指定标签的源属性
+        script.src = 'http://suggestion.baidu.com/su?wd='+keyword+'&cb=show';
+        //把此标签插入到当前页面中，浏览器会自动向SRC指定的URL发起请求，并执行下载下来的代码
+        document.body.appendChild(script);
+    }
+</script>
+
+</html>

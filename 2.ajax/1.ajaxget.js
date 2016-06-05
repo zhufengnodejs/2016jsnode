@@ -11,7 +11,7 @@ http.createServer(function(request,response){
        //从文件创建一个可读流
         fs.createReadStream('./1.ajaxget.html').pipe(response);// response是一个可写流
    }else if(pathname == '/ajax'){
-       response.statusCode = 404;
+       response.statusCode = 200;
        response.end('ajax');
    }else{
        response.end('404');
