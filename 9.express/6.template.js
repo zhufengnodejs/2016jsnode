@@ -1,4 +1,5 @@
 var express = require('express');
+var fs = require('fs');
 var path = require('path');
 /**
  * 1. 如何设置模板引擎
@@ -16,11 +17,7 @@ console.log(app.get('views'));
 //设置对于.html后缀的模板，使用ejs的函数来进行渲染
 app.engine('html',require('ejs').__express);
 
-app.get('/', function (req,res) {
-    // path 是相对路径，相对于views所在目录的相对路径
-    // data 是数据，是用来替换模板里的变量的数据
-    res.render('index',{title:'<h1>index</h1>'});
-});
+
 /**
  * =  把对象的属性把此变量进行替换，如果遇到html标签则进行转义
  * -  如果遇到html标签则不进行转义
@@ -36,16 +33,38 @@ app.use(function(req,res,next){
      * @param data 数据对象
      * @param callabck 模板渲染完成之后回调函数
      */
- res.render2 = function(tmpl,data,callabck){
+ res.render2 = function(tmpl,locals,callback){
      /**
       * 1. 先得到模板的真实路径
       * 2. 读取模板的内容
       * 3. 跟数据进行混合渲染得到最终的HTML字符串
-      * 4. 要把此HTML字符串发送给客户端
+      * 4. 把此HTML字符串发送给客户端
       * 5. 调用callback
       */
+     //如果有后缀，不处理，如果没后缀，加上.html后缀
+     var extName = app.get('view engine');
+     tmpl += tmpl.endsWith('.'+extName)?'':'.'+extName;
+      //得到模板的真实路径
+     var filename =  path.join(app.get('views'),tmpl);
+     fs.readFile(filename,'utf8',function(err,data){
+         console.log(data);
+         data = data.replace(/<%=(\w+)%>/,function(input,group1){
+            return locals[group1];
+         });
+        res.end(data);
+         callback();
+     });
 
  }
+    next();
+});
+
+app.get('/', function (req,res) {
+    // path 是相对路径，相对于views所在目录的相对路径
+    // data 是数据，是用来替换模板里的变量的数据
+    res.render2('index',{title:'index'},function(){
+        console.log('render ok');
+    });
 });
 
 
