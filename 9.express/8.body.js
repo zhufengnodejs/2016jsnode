@@ -31,7 +31,13 @@ app.use(bodyParser.urlencoded({extended:true}));//处理contenttype=urlencoded�
 app.post('/reg',function(req,res){
     res.send(req.body);
 });
-
+/**
+ * curl -X POST -d 'name=zfpx&age=8' http://localhost:9090/reg
+ curl -X POST -d '{"name":"zfpx"}' -H "Content-Type:application/json" http://localhost:9090/reg
+     -X 指定方法名
+     -d 指定请求体
+     -H 指定请求头
+ */
 app.post('/login',function(req,res){
     res.send(req.body);
 });
