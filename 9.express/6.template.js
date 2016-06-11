@@ -12,6 +12,7 @@ var app = express();
 // ejs -> html
 app.set('view engine', 'html');//设置模板引擎=其实就是渲染模板的方法
 app.set('views', path.join(__dirname, 'views'));//指定模板的存放目录
+console.log(app.get('views'));
 //设置对于.html后缀的模板，使用ejs的函数来进行渲染
 app.engine('html',require('ejs').__express);
 
@@ -29,11 +30,30 @@ app.get('/', function (req,res) {
  *
  *
  */
+app.use(function(req,res,next){
+    /**
+     * @param tmpl 模板的相对路径
+     * @param data 数据对象
+     * @param callabck 模板渲染完成之后回调函数
+     */
+ res.render2 = function(tmpl,data,callabck){
+     /**
+      * 1. 先得到模板的真实路径
+      * 2. 读取模板的内容
+      * 3. 跟数据进行混合渲染得到最终的HTML字符串
+      * 4. 要把此HTML字符串发送给客户端
+      * 5. 调用callback
+      */
+
+ }
+});
+
+
 app.get('/user', function (req,res) {
     //在render里给的对象全部属性会被拷贝到res.locals里
     //所以给res.locals赋值也可以
     //res.locals.username = 'zfpx';
-    res.render('user',{title:'zfpxtitle'});
+    res.render2('user',{title:'zfpxtitle'});
 });
 
 app.get('/home', function (req,res) {

@@ -24,6 +24,7 @@ app.get('/status',function(req,res){
     //如果要返回一个状态 码，不要再用send了，要用sendStatus
     //如果真要返回一个数字,要用引号引起来转成字符
     res.send(''+404);
+    res.sendStatus(404);
 });
 app.get('/index.html',function(req,res){
  /*读文件写入流
@@ -33,8 +34,8 @@ app.get('/index.html',function(req,res){
     //流的方式
   //fs.createReadStream('./index.html').pipe(res);
   //1.可以把文件内容发给客户端， 2 可以帮我们设置响应头contenttype 编码
-   //res.sendFile(path.resolve(__dirname,'index.html'));
-    res.sendFile('./index.html',{root:__dirname});
+   //res.sendFile(path.resolve(__dirname,'index.html'));//绝对路径
+    res.sendFile('./index.html',{root:__dirname});//相对路径，但是要指定是针对哪个绝对路径的相对路径
 });
 
 app.listen(9090);
