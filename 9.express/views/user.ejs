@@ -5,6 +5,14 @@
     <title>首页</title>
 </head>
 <body>
+<%
+  if(user.username){
+     %>
+        hello: <%=user.username%>
+     <%
+  }
+%>
+
 <%=title%>
 </body>
 </html>
