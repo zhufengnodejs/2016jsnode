@@ -7,6 +7,8 @@ var app = express();//调用函数可以得到应用对象app
  * '/' 表示请求的路径
  * function 代表当请求到来的时候执行的回调函数
  * 路由的特点是一旦匹配就不再往下继续匹配了
+ *
+ * 路由 -根据请求的方法和请求的路径匹配对应的处理函数
  */
 app.get('/',function(req,res){
     res.end('homepage');

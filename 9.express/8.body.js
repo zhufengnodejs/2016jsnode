@@ -1,4 +1,5 @@
 var express = require('express');
+var util = require('util');
 var querystring = require('querystring');
 //请求体处理中间件
 var bodyParser = require('body-parser');
@@ -29,7 +30,7 @@ app.use(bodyParser.urlencoded({extended:true}));//处理contenttype=urlencoded�
  * 接收客户端发过来的post请求
  */
 app.post('/reg',function(req,res){
-    res.send(req.body);
+    res.send(decodeURIComponent(util.inspect(req.body)));
 });
 /**
  * curl -X POST -d 'name=zfpx&age=8' http://localhost:9090/reg
@@ -39,7 +40,7 @@ app.post('/reg',function(req,res){
      -H 指定请求头
  */
 app.post('/login',function(req,res){
-    res.send(req.body);
+    res.send(decodeURIComponent(util.inspect(req.body)));
 });
 
 app.listen(9090);
