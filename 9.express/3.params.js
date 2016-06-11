@@ -14,18 +14,24 @@ var app = express();
 //:代表路径参数 /users/(\w+)
 // req.params {}  id name
 //路径 不但可以写字符串，也可以写带占位符的字符串，还可以写下则
+/*
 app.get(/\/home\/\w+\/\w+/,function(req,res){
-    console.log(req.path);
-    console.log(req.params);
+    console.log(req.path);//取得path路径
+    console.log(req.params);//取得参数对象
     //console.log(req.params[0]);//name
     //console.log(req.params[1]);//age
     res.end('ok');
 });
-
+*/
+//路径参数 把参数放在路径里面，会得到req.params对象
+// key 就是占位符， value是实际请求时的url中的字符串
+// /users/8/zfpx  => req.params = {id:8,name:'zfpx'}
 app.get('/users/:id/:name',function(req,res){
- console.log(req.path);
+
  res.end(req.params.id+req.params.name);
 });
+// get  /user?name=zfpx
+// method=get path= /user headers 请求头对象 query {name:'zfpx'}
 app.get('*',function(req,res){
     console.log(req.method);//方法名
     console.log(req.path);//路径名
