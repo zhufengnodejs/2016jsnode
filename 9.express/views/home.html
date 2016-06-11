@@ -6,13 +6,11 @@
 </head>
 <body>
 <%
-  if(user.username){
-     %>
-        hello: <%=user.username%>
-     <%
-  }
+ for(var i=1;i<=100;i++){
+    %>
+      <%=i%>
+    <%
+ }
 %>
-
-<%=title%>
 </body>
 </html>
