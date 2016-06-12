@@ -1,7 +1,6 @@
 /**
  * 1. 当客户端第一次访问服务器的时候，服务器会发送cookie给客户端。响应头 Set-Cookie,客户端收到cookie会后把它存放在本地
  * 2. 当客户端第二次访问服务器的时候，客户端会把上次保存的cookie重新发送给服务器端 请求头 Cookie
- *
  */
 var url = require('url');
 var http = require('http');
