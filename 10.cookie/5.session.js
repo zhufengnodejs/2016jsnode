@@ -20,8 +20,12 @@ app.get('/visit',function(req,res){
     if(sid){
         var sessionObj = sessions[sid];//得到会话对象，也就是此客户端在服务器存储的数据对象
         //扣10块钱，理一次发一次10块钱
-        sessionObj.money = sessionObj.money - 10;
-        res.send('欢迎你再次光临，你的理发卡还剩'+sessionObj.money+'元');
+        //如果说服务器已经重启过了，那么sessions就被清空了。
+        //在服务器端就找不到此卡号对应的数据了
+        if(sessionObj){
+            sessionObj.money = sessionObj.money - 10;
+            res.send('欢迎你再次光临，你的理发卡还剩'+sessionObj.money+'元');
+        }
     }else{
         //为当前客户端生成一个新的sessionId
         var sessionId = Date.now()+Math.random();
