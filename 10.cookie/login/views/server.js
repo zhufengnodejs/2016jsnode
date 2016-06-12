@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var app = express();
 app.set('view engine','html');
-app.set('views',path.join(__dirname,'views'));
+app.set('views',__dirname);
 //当遇到以.html结尾的模板的时候调用ejs提供的渲染方法进行渲染
 app.engine('html',require('ejs').__express);
 app.use(bodyParser.urlencoded({extended:true}));
