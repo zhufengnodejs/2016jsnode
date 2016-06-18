@@ -23,8 +23,11 @@ var personModel = mongoose.model('person',PersonSchema);
 
 var personEntity = new personModel({
     name:'张三',
-    age:18,
+    age:55,
     email:'zhang_renyang@126.com',
+    home:'北京'
 });
 
-personEntity.save();
+personEntity.save(function(err){
+    console.log(err);
+});
