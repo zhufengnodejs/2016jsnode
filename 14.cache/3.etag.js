@@ -17,9 +17,11 @@ var app = express();
  * @param filename
  */
 var crypto =  require('crypto');
-function getHash(filename){
-    var content = fs.readFileSync(filename);
-    return crypto.createHash('md5').update(content).digest('hex');
+//异步函数的返回值通过callback来接收，当异步任务完成的时候会调用callback
+function getHash(filename,callback){
+    fs.readFile(filename,function(err,content){
+        callback(err,crypto.createHash('md5').update(content).digest('hex'));
+    });
 }
 function static(root){
     return function(req,res,next){
@@ -30,14 +32,17 @@ function static(root){
             if(exists){
                 //获取缓存的etag
                 var ifNoneMatch = req.headers['if-none-match'];
-                var hash = getHash(filename);//获取此文件对应md5哈希值
-                if(hash == ifNoneMatch){ //如果一致表示未被修改过
-                    res.statusCode = 304;
-                    res.send('Not Modified');
-                }else{
-                    res.setHeader('Etag',hash);
-                    fs.createReadStream(filename).pipe(res);
-                }
+                //获取此文件对应md5哈希值
+                getHash(filename,function(err,hash){
+                    if(hash == ifNoneMatch){ //如果一致表示未被修改过
+                        res.statusCode = 304;
+                        res.send('Not Modified');
+                    }else{
+                        res.setHeader('Etag',hash);
+                        fs.createReadStream(filename).pipe(res);
+                    }
+                });
+
             }else{
                 next();
             }
