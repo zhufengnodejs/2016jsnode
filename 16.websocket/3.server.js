@@ -9,5 +9,8 @@ server.on('connection',function(ws){
   ws.on('message',function(msg){
     console.log(msg);
     ws.send("服务器回应:"+msg);
+    setInterval(function(){
+        ws.send("你好不?");
+    },3000)
   });
 });

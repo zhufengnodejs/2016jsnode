@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室</title>
+</head>
+<body>
+<button onclick="joinA()">进入A房间</button><button onclick="leaveA()">离开A房间</button><br/>
+<button onclick="joinB()">进入B房间</button><button onclick="leaveB()">离开B房间</button><br/>
+
+<input type="text" id="txtMsg">
+<button onclick="say()">在房间内发言</button>
+</body>
+<script src="http://localhost:9090/socket.io/socket.io.js"></script>
+<script>
+
+    var socket = io.connect('http://localhost:9090/');
+   /* socket.on('connect',function(){
+        console.log('连接成功');
+        socket.send('服务器晚上好');
+        socket.emit('message','服务器晚上好');
+    });
+    socket.on('message',function(msg){
+        console.log(msg);
+    });
+    */
+    function joinA(){//进入A房间
+        socket.emit('join','a');// 事件的类型是join 参数是a
+    }
+    function joinB(){//进入B房间
+        socket.emit('join','b');
+    }
+    function leaveA(){//离开A房间
+        socket.emit('leave','a');// 事件的类型是join 参数是a
+    }
+    function leaveB(){//离开B房间
+        socket.emit('leave','b');
+    }
+    function say(){ //在房间内发言 广播
+        socket.emit('broadcast',document.querySelector('#txtMsg').value);
+    }
+    socket.on('message',function(msg){
+        console.log(msg);
+    });
+</script>
+</html>

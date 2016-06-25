@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室</title>
+</head>
+<body>
+
+</body>
+<script src="http://localhost:9090/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('http://localhost:9090/study');
+    socket.on('connect',function(){
+        console.log('连接成功');
+        socket.send('服务器晚上好');
+    });
+    socket.on('message',function(msg){
+        console.log(msg);
+    });
+</script>
+</html>
