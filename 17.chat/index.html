@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">
 </head>
 <body>
-<div class="container">
+<div class="container" ng-controller="zfpxCtrl">
     <div class="panel panel-success">
         <div class="panel-heading">欢迎来到聊天室</div>
         <div class="panel-body">
@@ -19,23 +19,54 @@
         <div class="panel-footer">
             <div class="row">
                 <div class="col-xs-10">
-                    <input type="text" class="form-control">
+                    <input ng-model="message" type="text" class="form-control">
                 </div>
                 <div class="col-xs-2">
-                    <input type="button" class="btn btn-primary" value="发言">
+                    <input type="button" class="btn btn-primary" value="发言" ng-click="send()">
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
 </body>
+<script src="/socket.io/socket.io.js"></script>
 <script src="/lib/angular/angular.js"></script>
 <script>
     angular.module('zfpxMod',[]);
-    angular.module('zfpxMod').controller('zfpxCtrl',function($scope){
-        $scope.messages = [];
+    angular.module('zfpxMod').factory('socket',function($rootScope){
+        var socket = io.connect('/');
+        return {
+            on:function(type,callback){
+                socket.on(type,function(){
+                    var args = Array.from(arguments);
+                    $rootScope.$apply(function(){
+                        callback.apply(socket,args);
+                    });
+                });
+            },
+            emit:function(type,data){
+                socket.emit(type,data);
+            }
+        }
     });
+    angular.module('zfpxMod').controller('zfpxCtrl',function($scope,socket){
+        $scope.messages = [];
+        $scope.message = '';
+
+        $scope.send = function(){
+            socket.emit('message',$scope.message);
+            $scope.message = '';
+        }
+        socket.on('message',function(msg){
+            $scope.messages.push(msg);
+        });
+    });
+    /**
+     * 客户端和服务器建立连接，然后就可以发送消息
+     * 1. 建立连接
+     * 2. 客户端向服务器发消息
+     * 3. 服务器再把此消息广播给所有的客户端
+     * 4. 客户端收到消息后在消息列表中显示出来
+     */
 </script>
 </html>
