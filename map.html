@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+</body>
+<script>
+    if (sessionStorage.pagecount)
+    {
+        sessionStorage.pagecount=Number(sessionStorage.pagecount) +1;
+    }
+    else
+    {
+        sessionStorage.pagecount=1;
+    }
+    document.write("Visits "+ sessionStorage.pagecount + " time(s).");
+</script>
+</html>
