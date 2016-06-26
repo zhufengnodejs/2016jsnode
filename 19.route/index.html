@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="zfpxMod">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">
+       这是我的头
+    </div>
+    <div class="panel-body" ng-view>
+
+    </div>
+    <div class="panel-footer">
+        这是我的尾巴
+    </div>
+</div>
+</body>
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular-route/angular-route.js"></script>
+<script>
+    angular.module('zfpxMod',['ngRoute']);
+    //用来配置我们的服务
+    //$RouteProvider 可以用来配置路由
+    angular.module('zfpxMod').config(function($routeProvider){
+        $routeProvider.when('/',{
+            template:'首页'
+        }).when('/user',{
+            template:'用户管理'
+        }).when('/user/:id',{
+            template:'某个用户'
+        }).otherwise({
+            redirectTo:'/' //否则 的话重定向到/
+        })
+    });
+</script>
+</html>
