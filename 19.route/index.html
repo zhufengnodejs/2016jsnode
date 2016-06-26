@@ -5,7 +5,13 @@
     <title>Title</title>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
 </head>
-<body>
+<body class="container">
+<nav class="navbar navbar-default">
+    <ul class="nav navbar-nav">
+        <li><a href="#/">首页</a></li>
+        <li><a href="#/user">用户管理</a></li>
+    </ul>
+</nav>
 <div class="panel panel-default">
     <div class="panel-heading">
        这是我的头
@@ -28,9 +34,22 @@
         $routeProvider.when('/',{
             template:'首页'
         }).when('/user',{
-            template:'用户管理'
+            templateUrl:'pages/user.html'
         }).when('/user/:id',{
-            template:'某个用户'
+            template:'{{name}}',
+            controller:function($scope,$routeParams,$http){//控制器用来加强和初始化scope
+                var id = $routeParams.id;
+                // $http == $.ajax
+                $http({
+                    url:'users.json',
+                    method:'GET'
+                }).then(function(data){
+                    var users = data.data;
+                    var user = users.filter(user=>user.id == id)[0];
+                    $scope.name = user?user.name:'未知人';
+                });
+
+            }
         }).otherwise({
             redirectTo:'/' //否则 的话重定向到/
         })
