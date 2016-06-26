@@ -24,6 +24,7 @@
             controller:'roomCtrl'
         });
     });
+    //factory 工厂函数  调用它的时候会生产或返回一个对象
     angular.module('zfpxMod').factory('socket',function($rootScope){
         var socket = io.connect('/');
         return {
@@ -41,17 +42,32 @@
         }
     });
     angular.module('zfpxMod').controller('roomsCtrl',function($scope,socket){
-        $scope.rooms = [{id:1,name:'粉红色房间'},{id:2,name:'黑色房间'}];
+        $scope.rooms = [];
+        socket.emit('getAllRooms');
+        socket.on('allRooms',function(rooms){
+            $scope.rooms = rooms;
+        });
+        socket.on('roomCreated',function(room){
+            $scope.rooms.push(room);
+        });
+        $scope.createRoom = function(){
+          /*  $scope.rooms.push({id:''+Date.now(),name:$scope.roomName});*/
+            //发一个消息到后台
+            socket.emit('createRoom',$scope.roomName);
+        }
     });
-    angular.module('zfpxMod').controller('roomCtrl',function($scope,socket){
+    angular.module('zfpxMod').controller('roomCtrl',function($scope,socket,$routeParams){
         $scope.messages = [];
         $scope.message = '';
-
+        socket.emit('getAllMessages',$routeParams.id);
+        socket.on('allMessages',function(messages){
+            $scope.messages = messages;
+        });
         $scope.send = function(){
-            socket.emit('message',$scope.message);
+            socket.emit('addMessage',{message:$scope.message,roomId:$routeParams.id});
             $scope.message = '';
         }
-        socket.on('message',function(msg){
+        socket.on('messageAdded',function(msg){
             $scope.messages.push(msg);
         });
     });
