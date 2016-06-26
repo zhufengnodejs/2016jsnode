@@ -6,33 +6,24 @@
     <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">
 </head>
 <body>
-<div class="container" ng-controller="zfpxCtrl">
-    <div class="panel panel-success">
-        <div class="panel-heading">欢迎来到聊天室</div>
-        <div class="panel-body">
-            <ul class="list-group">
-                <li ng-repeat="message in messages track by $index" class="list-group-item">
-                    {{message}}
-                </li>
-            </ul>
-        </div>
-        <div class="panel-footer">
-            <div class="row">
-                <div class="col-xs-10">
-                    <input ng-model="message" type="text" class="form-control">
-                </div>
-                <div class="col-xs-2">
-                    <input type="button" class="btn btn-primary" value="发言" ng-click="send()">
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container" ng-view>
+
 </div>
 </body>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/lib/angular/angular.js"></script>
+<script src="/lib/angular-route/angular-route.js"></script>
 <script>
-    angular.module('zfpxMod',[]);
+    angular.module('zfpxMod',['ngRoute']);
+    angular.module('zfpxMod').config(function($routeProvider){
+        $routeProvider.when('/',{//房间列表
+            templateUrl:'/pages/rooms.html',
+            controller:'roomsCtrl'
+        }).when('/rooms/:id',{//显示ID对应的房间的聊天窗口
+            templateUrl:'/pages/room.html',
+            controller:'roomCtrl'
+        });
+    });
     angular.module('zfpxMod').factory('socket',function($rootScope){
         var socket = io.connect('/');
         return {
@@ -49,7 +40,10 @@
             }
         }
     });
-    angular.module('zfpxMod').controller('zfpxCtrl',function($scope,socket){
+    angular.module('zfpxMod').controller('roomsCtrl',function($scope,socket){
+        $scope.rooms = [{id:1,name:'粉红色房间'},{id:2,name:'黑色房间'}];
+    });
+    angular.module('zfpxMod').controller('roomCtrl',function($scope,socket){
         $scope.messages = [];
         $scope.message = '';
 
